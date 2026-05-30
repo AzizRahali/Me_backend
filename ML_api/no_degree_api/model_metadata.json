@@ -1,0 +1,218 @@
+{
+  "model_name": "LogisticRegression + OneHot + job_title/skills TF-IDF",
+  "target": "job_no_degree_mention",
+  "positive_class": "no degree mentioned",
+  "negative_class": "degree mentioned or unknown",
+  "default_threshold": 0.5,
+  "selected_threshold": 0.52,
+  "metrics_default_threshold": {
+    "accuracy": 0.7107140357240581,
+    "precision": 0.5170256332473836,
+    "recall": 0.8494445021285433,
+    "f1": 0.6428015808785976,
+    "roc_auc": 0.8255425726777778,
+    "avg_precision": 0.6295714212753949
+  },
+  "metrics_selected_threshold": {
+    "accuracy": 0.7187764478297667,
+    "precision": 0.5261365885846255,
+    "recall": 0.8279098743640328,
+    "f1": 0.6433954651819576,
+    "roc_auc": 0.8255425726777778,
+    "avg_precision": 0.6295714212753949
+  },
+  "classification_report_default_threshold": {
+    "degree mentioned/unknown": {
+      "precision": 0.9070905898786411,
+      "recall": 0.6494210690496725,
+      "f1-score": 0.7569281440647607,
+      "support": 108994.0
+    },
+    "no degree mentioned": {
+      "precision": 0.5170256332473836,
+      "recall": 0.8494445021285433,
+      "f1-score": 0.6428015808785976,
+      "support": 48155.0
+    },
+    "accuracy": 0.7107140357240581,
+    "macro avg": {
+      "precision": 0.7120581115630124,
+      "recall": 0.7494327855891079,
+      "f1-score": 0.6998648624716792,
+      "support": 157149.0
+    },
+    "weighted avg": {
+      "precision": 0.7875634023904725,
+      "recall": 0.7107140357240581,
+      "f1-score": 0.7219564633653629,
+      "support": 157149.0
+    }
+  },
+  "confusion_matrix_default_threshold": [
+    [
+      70783,
+      38211
+    ],
+    [
+      7250,
+      40905
+    ]
+  ],
+  "input_schema": {
+    "job_title_short": "string",
+    "job_country": "string; grouped to Other if not in top_countries",
+    "job_schedule_type": "string",
+    "company_size": "string",
+    "job_work_from_home": "boolean",
+    "job_health_insurance": "boolean",
+    "job_title": "string",
+    "job_skills": "list of strings"
+  },
+  "model_features": [
+    "job_title_short",
+    "job_country_grouped",
+    "job_schedule_type",
+    "company_size",
+    "job_work_from_home",
+    "job_health_insurance",
+    "job_title",
+    "skills_text"
+  ],
+  "categorical_features": [
+    "job_title_short",
+    "job_country_grouped",
+    "job_schedule_type",
+    "company_size"
+  ],
+  "boolean_features": [
+    "job_work_from_home",
+    "job_health_insurance"
+  ],
+  "text_features": [
+    "job_title",
+    "skills_text"
+  ],
+  "top_countries": [
+    "United States",
+    "India",
+    "United Kingdom",
+    "France",
+    "Germany",
+    "Spain",
+    "Singapore",
+    "Sudan",
+    "Netherlands",
+    "Italy",
+    "Canada",
+    "Mexico",
+    "Poland",
+    "Portugal",
+    "Australia",
+    "South Africa",
+    "Belgium",
+    "Philippines",
+    "Ireland",
+    "Switzerland"
+  ],
+  "class_distribution": {
+    "0": 0.6936,
+    "1": 0.3064
+  },
+  "options": {
+    "job_title_short": [
+      "Business Analyst",
+      "Cloud Engineer",
+      "Data Analyst",
+      "Data Engineer",
+      "Data Scientist",
+      "Machine Learning Engineer",
+      "Senior Data Analyst",
+      "Senior Data Engineer",
+      "Senior Data Scientist",
+      "Software Engineer"
+    ],
+    "job_country": [
+      "United States",
+      "India",
+      "United Kingdom",
+      "France",
+      "Germany",
+      "Spain",
+      "Singapore",
+      "Sudan",
+      "Netherlands",
+      "Italy",
+      "Canada",
+      "Mexico",
+      "Poland",
+      "Portugal",
+      "Australia",
+      "South Africa",
+      "Belgium",
+      "Philippines",
+      "Ireland",
+      "Switzerland",
+      "Other"
+    ],
+    "job_schedule_type": [
+      "Contractor",
+      "Contractor and Full-time",
+      "Contractor and Internship",
+      "Contractor and Part-time",
+      "Contractor and Per diem",
+      "Contractor and Temp work",
+      "Contractor, Temp work, and Internship",
+      "Full-time",
+      "Full-time and Contractor",
+      "Full-time and Internship",
+      "Full-time and Part-time",
+      "Full-time and Per diem",
+      "Full-time and Temp work",
+      "Full-time and Volunteer",
+      "Full-time, Contractor, and Internship",
+      "Full-time, Contractor, and Temp work",
+      "Full-time, Contractor, and Volunteer",
+      "Full-time, Part-time, and Contractor",
+      "Full-time, Part-time, and Internship",
+      "Full-time, Part-time, and Per diem",
+      "Full-time, Part-time, and Temp work",
+      "Full-time, Part-time, and Volunteer",
+      "Full-time, Temp work, and Internship",
+      "Full-time, Temp work, and Per diem",
+      "Internship",
+      "Internship and Full-time",
+      "Internship and Per diem",
+      "Internship and Volunteer",
+      "Kontraktor",
+      "Part-time",
+      "Part-time and Contractor",
+      "Part-time and Full-time",
+      "Part-time and Internship",
+      "Part-time and Per diem",
+      "Part-time and Temp work",
+      "Part-time and Volunteer",
+      "Part-time, Contractor, and Internship",
+      "Part-time, Contractor, and Temp work",
+      "Part-time, Internship, and Volunteer",
+      "Part-time, Temp work, and Internship",
+      "Pekerjaan tetap",
+      "Per diem",
+      "Temp work",
+      "Temp work and Full-time",
+      "Temp work and Internship",
+      "Temp work, Full-time, and Part-time",
+      "Unknown",
+      "Volunteer"
+    ],
+    "company_size": [
+      "1-10",
+      "1001-5000",
+      "11-50",
+      "201-500",
+      "5000+",
+      "501-1000",
+      "51-200",
+      "Unknown"
+    ]
+  }
+}

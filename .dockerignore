@@ -1,0 +1,38 @@
+# API services (built separately)
+ML_api/
+forecast_api/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+*.whl
+
+# Git
+.git/
+.gitignore
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+.DS_Store
+
+# Docker
+docker-compose.yml
+Dockerfile
+*.dockerignore
+
+# Misc
+*.zip
+*.tar.gz
+README.md
+*.md
+migrate.py
+.env

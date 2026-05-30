@@ -1,0 +1,6 @@
+__pycache__
+*.pyc
+*.zip
+README.md
+train_model.py
+no_degree_api/

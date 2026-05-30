@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(New-Item -ItemType Directory -Path \"D:\\\\ME - 2026\\\\Final project\\\\pages\" -Force)",
+      "PowerShell(New-Item -ItemType Directory -Path \"D:\\\\ME - 2026\\\\Final project\\\\models\" -Force)",
+      "PowerShell(New-Item -ItemType Directory -Path \"D:\\\\ME - 2026\\\\Final project\\\\utils\" -Force)",
+      "PowerShell(New-Item -ItemType Directory -Path \"D:\\\\ME - 2026\\\\Final project\\\\data\" -Force)",
+      "PowerShell(if \\(-not \\(Test-Path \"D:\\\\ME - 2026\\\\Final project\\\\forecast_api\\\\data\"\\)\\) { New-Item -ItemType Directory -Path \"D:\\\\ME - 2026\\\\Final project\\\\forecast_api\\\\data\" -Force }; New-Item -ItemType File -Path \"D:\\\\ME - 2026\\\\Final project\\\\forecast_api\\\\data\\\\.gitkeep\" -Force)",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\ME - 2026\\\\Final project\\\\forecast_api\" -Recurse -Force | ForEach-Object { $_.FullName })",
+      "PowerShell($env:TF_ENABLE_ONEDNN_OPTS=0; cd \"D:\\\\ME - 2026\\\\Final project\\\\forecast_api\"; python train.py)",
+      "PowerShell(try { $r = Invoke-RestMethod -Uri \"http://localhost:8001/health\" -Method Get; $r | ConvertTo-Json } catch { Write-Output \"API is not reachable: $_\" })",
+      "Bash(Get-ChildItem -Path \"D:\\\\ME - 2026\\\\Final project\\\\ML_api\\\\no_degree_api\" -File)",
+      "Bash(docker compose *)",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(curl -s http://localhost:8002/health)",
+      "Bash(curl -s http://localhost:8002/predict -H \"Content-Type: application/json\" -d \"{\\\\\"job_title_short\\\\\":\\\\\"Data Analyst\\\\\",\\\\\"job_country\\\\\":\\\\\"France\\\\\",\\\\\"job_schedule_type\\\\\":\\\\\"Full-time\\\\\",\\\\\"company_size\\\\\":\\\\\"51-200\\\\\",\\\\\"job_work_from_home\\\\\":false,\\\\\"job_health_insurance\\\\\":false,\\\\\"job_title\\\\\":\\\\\"Junior Data Analyst\\\\\",\\\\\"job_skills\\\\\":[\\\\\"python\\\\\",\\\\\"sql\\\\\",\\\\\"excel\\\\\"]}\")",
+      "Bash(python -m json.tool)",
+      "Bash(curl -s http://localhost:8000/predict -H \"Content-Type: application/json\" -d \"{\\\\\"job_title_short\\\\\":\\\\\"Data Analyst\\\\\",\\\\\"job_country\\\\\":\\\\\"France\\\\\",\\\\\"job_schedule_type\\\\\":\\\\\"Full-time\\\\\",\\\\\"company_size\\\\\":\\\\\"51-200\\\\\",\\\\\"job_work_from_home\\\\\":false,\\\\\"job_no_degree_mention\\\\\":false,\\\\\"job_health_insurance\\\\\":false,\\\\\"job_title\\\\\":\\\\\"Junior Data Analyst\\\\\",\\\\\"job_skills\\\\\":[\\\\\"python\\\\\",\\\\\"sql\\\\\",\\\\\"excel\\\\\"]}\")",
+      "Bash(docker rm *)"
+    ]
+  }
+}
