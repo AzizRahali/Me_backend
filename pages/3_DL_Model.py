@@ -175,13 +175,13 @@ st.markdown("""
 # API HELPERS
 # ══════════════════════════════════════════════════════════════
 
-DL_API_URL = os.getenv("DL_API_URL", "http://localhost:8001")
+API_URL = os.getenv("API_URL", "http://localhost:10000")
 
 
 @st.cache_data(ttl=300)
 def fetch_dl_metadata():
     try:
-        resp = requests.get(f"{DL_API_URL}/metadata", timeout=5)
+        resp = requests.get(f"{API_URL}/forecast/metadata", timeout=10)
         resp.raise_for_status()
         return resp.json(), True
     except Exception:
@@ -192,9 +192,9 @@ def fetch_dl_metadata():
 def fetch_forecast(region: str, sector: str) -> dict | None:
     try:
         resp = requests.post(
-            f"{DL_API_URL}/forecast",
+            f"{API_URL}/forecast/forecast",
             json={"region": region, "sector": sector},
-            timeout=15,
+            timeout=30,
         )
         resp.raise_for_status()
         return resp.json()

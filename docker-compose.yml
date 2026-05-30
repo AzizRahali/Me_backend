@@ -1,5 +1,17 @@
 services:
 
+  # ── Unified API (Salary + Degree + Forecast) ──
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: joblens_api
+    restart: unless-stopped
+    ports:
+      - "10000:10000"
+    environment:
+      DATA_DIR: /app/data
+
   # ── Streamlit Frontend ──
   streamlit:
     build:
@@ -10,47 +22,9 @@ services:
     ports:
       - "8501:8501"
     depends_on:
-      - salary_api
-      - degree_api
-      - forecast_api
+      - api
     environment:
-      ML_API_URL: http://salary_api:8000
-      DEGREE_API_URL: http://degree_api:8002
-      DL_API_URL: http://forecast_api:8001
+      API_URL: http://api:10000
       NLP_API_URL: https://arijarfaoui39--recommend-dev.modal.run
       NLP_API_KEY: ${NLP_API_KEY}
       POWERBI_EMBED_URL: ${POWERBI_EMBED_URL}
-
-  # ── ML Salary Prediction API ──
-  salary_api:
-    build:
-      context: ./ML_api
-      dockerfile: Dockerfile
-    container_name: ml_salary_api
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
-
-  # ── ML Degree Classifier API ──
-  degree_api:
-    build:
-      context: ./ML_api/no_degree_api
-      dockerfile: Dockerfile
-    container_name: ml_degree_api
-    restart: unless-stopped
-    ports:
-      - "8002:8002"
-
-  # ── DL Forecast API ──
-  forecast_api:
-    build:
-      context: ./forecast_api
-      dockerfile: Dockerfile
-    container_name: dl_forecast_api
-    restart: unless-stopped
-    ports:
-      - "8001:8001"
-    volumes:
-      - ./forecast_api/data:/app/data:ro
-    environment:
-      DATA_DIR: /app/data

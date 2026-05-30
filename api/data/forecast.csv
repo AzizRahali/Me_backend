@@ -1,0 +1,43 @@
+date,sector,mean,low,high
+2026-05,Software Development,84.04,83.37,84.65
+2026-05,Data & Analytics,78.99,78.68,79.28
+2026-05,IT Systems & Solutions,89.64,89.5,89.74
+2026-05,Project Management,96.46,96.26,96.74
+2026-05,Marketing,76.5,76.31,76.75
+2026-05,Management,113.56,112.98,114.04
+2026-05,Human Resources,91.34,91.14,91.61
+2026-06,Software Development,83.11,81.8,84.16
+2026-06,Data & Analytics,77.61,76.92,78.24
+2026-06,IT Systems & Solutions,88.54,88.23,88.8
+2026-06,Project Management,95.59,95.13,96.17
+2026-06,Marketing,76.1,75.65,76.54
+2026-06,Management,112.99,111.76,114.08
+2026-06,Human Resources,90.08,89.69,90.61
+2026-07,Software Development,82.02,80.31,83.46
+2026-07,Data & Analytics,75.93,74.91,76.92
+2026-07,IT Systems & Solutions,87.06,86.6,87.51
+2026-07,Project Management,94.29,93.55,95.18
+2026-07,Marketing,75.75,74.94,76.47
+2026-07,Management,112.46,110.65,114.23
+2026-07,Human Resources,88.11,87.6,88.84
+2026-08,Software Development,80.75,78.88,82.59
+2026-08,Data & Analytics,73.8,72.51,75.13
+2026-08,IT Systems & Solutions,85.08,84.5,85.73
+2026-08,Project Management,92.53,91.5,93.69
+2026-08,Marketing,75.3,74.11,76.34
+2026-08,Management,112.09,109.77,114.55
+2026-08,Human Resources,85.35,84.76,86.24
+2026-09,Software Development,79.31,77.22,81.75
+2026-09,Data & Analytics,71.13,69.59,72.79
+2026-09,IT Systems & Solutions,82.59,81.91,83.46
+2026-09,Project Management,90.34,89.03,91.75
+2026-09,Marketing,74.54,72.99,75.9
+2026-09,Management,111.94,109.03,115.08
+2026-09,Human Resources,81.89,81.22,82.91
+2026-10,Software Development,77.73,75.19,80.81
+2026-10,Data & Analytics,67.9,66.16,69.91
+2026-10,IT Systems & Solutions,79.68,78.91,80.74
+2026-10,Project Management,87.83,86.28,89.48
+2026-10,Marketing,73.27,71.4,74.92
+2026-10,Management,111.98,108.34,115.8
+2026-10,Human Resources,77.94,77.19,79.09

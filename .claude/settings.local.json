@@ -16,7 +16,12 @@
       "Bash(curl -s http://localhost:8002/predict -H \"Content-Type: application/json\" -d \"{\\\\\"job_title_short\\\\\":\\\\\"Data Analyst\\\\\",\\\\\"job_country\\\\\":\\\\\"France\\\\\",\\\\\"job_schedule_type\\\\\":\\\\\"Full-time\\\\\",\\\\\"company_size\\\\\":\\\\\"51-200\\\\\",\\\\\"job_work_from_home\\\\\":false,\\\\\"job_health_insurance\\\\\":false,\\\\\"job_title\\\\\":\\\\\"Junior Data Analyst\\\\\",\\\\\"job_skills\\\\\":[\\\\\"python\\\\\",\\\\\"sql\\\\\",\\\\\"excel\\\\\"]}\")",
       "Bash(python -m json.tool)",
       "Bash(curl -s http://localhost:8000/predict -H \"Content-Type: application/json\" -d \"{\\\\\"job_title_short\\\\\":\\\\\"Data Analyst\\\\\",\\\\\"job_country\\\\\":\\\\\"France\\\\\",\\\\\"job_schedule_type\\\\\":\\\\\"Full-time\\\\\",\\\\\"company_size\\\\\":\\\\\"51-200\\\\\",\\\\\"job_work_from_home\\\\\":false,\\\\\"job_no_degree_mention\\\\\":false,\\\\\"job_health_insurance\\\\\":false,\\\\\"job_title\\\\\":\\\\\"Junior Data Analyst\\\\\",\\\\\"job_skills\\\\\":[\\\\\"python\\\\\",\\\\\"sql\\\\\",\\\\\"excel\\\\\"]}\")",
-      "Bash(docker rm *)"
+      "Bash(docker rm *)",
+      "Bash(git stash *)",
+      "Bash(git update-ref *)",
+      "Bash(git reflog *)",
+      "Bash(git gc *)",
+      "Bash(git push *)"
     ]
   }
 }

@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: joblens-api
+    runtime: docker
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: ./api
+    plan: free
+    envVars:
+      - key: DATA_DIR
+        value: /app/data

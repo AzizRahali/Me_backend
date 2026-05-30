@@ -169,14 +169,13 @@ st.markdown("""
 # ═══════════════════════════════════════════════════════════
 # API CONNECTIONS
 # ═══════════════════════════════════════════════════════════
-SALARY_API_URL = os.getenv("ML_API_URL", "http://localhost:8000")
-DEGREE_API_URL = os.getenv("DEGREE_API_URL", "http://localhost:8002")
+API_URL = os.getenv("API_URL", "http://localhost:10000")
 
 
 @st.cache_data(ttl=300)
 def fetch_salary_metadata():
     try:
-        resp = requests.get(f"{SALARY_API_URL}/metadata", timeout=5)
+        resp = requests.get(f"{API_URL}/salary/metadata", timeout=10)
         resp.raise_for_status()
         return resp.json(), True
     except Exception:
@@ -186,7 +185,7 @@ def fetch_salary_metadata():
 @st.cache_data(ttl=300)
 def fetch_degree_metadata():
     try:
-        resp = requests.get(f"{DEGREE_API_URL}/metadata", timeout=5)
+        resp = requests.get(f"{API_URL}/degree/metadata", timeout=10)
         resp.raise_for_status()
         return resp.json(), True
     except Exception:
@@ -195,7 +194,7 @@ def fetch_degree_metadata():
 
 def predict_salary(payload: dict) -> dict | None:
     try:
-        resp = requests.post(f"{SALARY_API_URL}/predict", json=payload, timeout=10)
+        resp = requests.post(f"{API_URL}/salary/predict", json=payload, timeout=30)
         resp.raise_for_status()
         return resp.json()
     except Exception as e:
@@ -205,7 +204,7 @@ def predict_salary(payload: dict) -> dict | None:
 
 def predict_degree(payload: dict) -> dict | None:
     try:
-        resp = requests.post(f"{DEGREE_API_URL}/predict", json=payload, timeout=10)
+        resp = requests.post(f"{API_URL}/degree/predict", json=payload, timeout=30)
         resp.raise_for_status()
         return resp.json()
     except Exception as e:

@@ -1,0 +1,124 @@
+{
+  "model_name": "RandomForestRegressor + OneHot + job_title/skills TF-IDF",
+  "target": "log_salary_year_avg",
+  "prediction_transform": "salary = expm1(model_prediction)",
+  "salary_outlier_limits": {
+    "lower": 45000.0,
+    "upper": 274000.0
+  },
+  "metrics": {
+    "MAE_dollars": 22192.986697246746,
+    "MedianAE_dollars": 17133.506155834737,
+    "RMSE_dollars": 29842.072724600042,
+    "R2_log_target": 0.508161583067321
+  },
+  "input_schema": {
+    "job_title_short": "string",
+    "job_country": "string; grouped to Other if not in top_countries",
+    "job_schedule_type": "string",
+    "company_size": "string",
+    "job_work_from_home": "boolean",
+    "job_no_degree_mention": "boolean",
+    "job_health_insurance": "boolean",
+    "job_title": "string",
+    "job_skills": "list of strings"
+  },
+  "model_features": [
+    "job_title_short",
+    "job_country_grouped",
+    "job_schedule_type",
+    "company_size",
+    "job_work_from_home",
+    "job_no_degree_mention",
+    "job_health_insurance",
+    "job_title",
+    "skills_text"
+  ],
+  "categorical_features": [
+    "job_title_short",
+    "job_country_grouped",
+    "job_schedule_type",
+    "company_size"
+  ],
+  "boolean_features": [
+    "job_work_from_home",
+    "job_no_degree_mention",
+    "job_health_insurance"
+  ],
+  "text_features": [
+    "job_title",
+    "skills_text"
+  ],
+  "top_countries": [
+    "United States",
+    "Sudan",
+    "India",
+    "Canada",
+    "United Kingdom",
+    "Germany",
+    "France",
+    "Poland",
+    "Spain",
+    "Portugal"
+  ],
+  "options": {
+    "job_title_short": [
+      "Business Analyst",
+      "Cloud Engineer",
+      "Data Analyst",
+      "Data Engineer",
+      "Data Scientist",
+      "Machine Learning Engineer",
+      "Senior Data Analyst",
+      "Senior Data Engineer",
+      "Senior Data Scientist",
+      "Software Engineer"
+    ],
+    "job_country": [
+      "United States",
+      "Sudan",
+      "India",
+      "Canada",
+      "United Kingdom",
+      "Germany",
+      "France",
+      "Poland",
+      "Spain",
+      "Portugal",
+      "Other"
+    ],
+    "job_schedule_type": [
+      "Contractor",
+      "Contractor and Temp work",
+      "Full-time",
+      "Full-time and Contractor",
+      "Full-time and Internship",
+      "Full-time and Part-time",
+      "Full-time and Per diem",
+      "Full-time and Temp work",
+      "Full-time, Contractor, and Internship",
+      "Full-time, Contractor, and Temp work",
+      "Full-time, Part-time, and Contractor",
+      "Full-time, Part-time, and Internship",
+      "Full-time, Part-time, and Temp work",
+      "Full-time, Temp work, and Internship",
+      "Internship",
+      "Internship and Full-time",
+      "Part-time",
+      "Part-time and Contractor",
+      "Part-time and Full-time",
+      "Temp work",
+      "Unknown"
+    ],
+    "company_size": [
+      "1-10",
+      "1001-5000",
+      "11-50",
+      "201-500",
+      "5000+",
+      "501-1000",
+      "51-200",
+      "Unknown"
+    ]
+  }
+}
