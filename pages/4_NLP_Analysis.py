@@ -15,8 +15,8 @@ show_sidebar_info()
 back_to_home()
 
 # ── API config ──
-NLP_API_URL = os.getenv("NLP_API_URL", "https://arijarfaoui39--recommend-dev.modal.run")
-NLP_API_KEY = os.getenv("NLP_API_KEY", "")
+NLP_API_URL = os.getenv("NLP_API_URL", "https://arijarfaoui39--recommend.modal.run")
+NLP_API_KEY = os.getenv("NLP_API_KEY", "areejazizmelekarijmlnlp54227725")
 
 COMMON_SKILLS = [
     "SQL", "Python", "Excel", "Power BI", "Tableau", "R",
