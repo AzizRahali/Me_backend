@@ -1,18 +1,45 @@
+import time
+import base64
 import streamlit as st
+
+# ── Professional inline SVG icon set (Lucide-style, stroke-based) ──
+_ICON_PATHS = {
+    "home": '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+    "dashboard": '<rect width="7" height="9" x="3" y="3" rx="1.5"/><rect width="7" height="5" x="14" y="3" rx="1.5"/><rect width="7" height="9" x="14" y="12" rx="1.5"/><rect width="7" height="5" x="3" y="16" rx="1.5"/>',
+    "salary": '<circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>',
+    "forecast": '<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>',
+    "advisor": '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/>',
+}
+
+
+def svg(name: str, size: int = 24, color: str = "#a78bfa", stroke_width: float = 2.0) -> str:
+    """Return an icon as a base64 data-URI <img> (renders reliably in st.markdown)."""
+    inner = _ICON_PATHS.get(name, "")
+    raw = (
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" '
+        f'viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="{stroke_width}" '
+        f'stroke-linecap="round" stroke-linejoin="round">{inner}</svg>'
+    )
+    b64 = base64.b64encode(raw.encode("utf-8")).decode("ascii")
+    return (
+        f'<img src="data:image/svg+xml;base64,{b64}" width="{size}" height="{size}" '
+        f'style="display:block;" alt="{name}"/>'
+    )
+
 
 GLOBAL_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-    --bg-primary: #f5f6fa;
-    --bg-card: #ffffff;
-    --bg-card-hover: #f8f9ff;
-    --border-subtle: rgba(0, 0, 0, 0.07);
-    --border-accent: rgba(108, 92, 231, 0.25);
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --text-muted: #94a3b8;
+    --bg-primary: #0f0f1a;
+    --bg-card: #1a1a2e;
+    --bg-card-hover: #1e1e35;
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-accent: rgba(108, 92, 231, 0.35);
+    --text-primary: #e2e8f0;
+    --text-secondary: #cbd5e1;
+    --text-muted: #cbd5e1;
     --accent-purple: #6C5CE7;
     --accent-blue: #0EA5E9;
     --accent-emerald: #10B981;
@@ -22,9 +49,9 @@ GLOBAL_CSS = """
     --gradient-2: linear-gradient(135deg, #F43F5E, #F59E0B);
     --gradient-3: linear-gradient(135deg, #10B981, #0EA5E9);
     --gradient-4: linear-gradient(135deg, #6C5CE7, #F43F5E);
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
-    --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 30px rgba(0,0,0,0.4);
 }
 
 /* ── Global Reset ── */
@@ -54,9 +81,9 @@ div[data-testid="stSidebarNav"] { display: none !important; }
 
 /* ── Sidebar ── */
 section[data-testid="stSidebar"] {
-    background: #ffffff !important;
+    background: var(--bg-card) !important;
     border-right: 1px solid var(--border-subtle) !important;
-    box-shadow: 2px 0 12px rgba(0,0,0,0.03);
+    box-shadow: 2px 0 12px rgba(0,0,0,0.3);
 }
 
 section[data-testid="stSidebar"] .stMarkdown p {
@@ -206,10 +233,21 @@ section[data-testid="stSidebar"] .stMarkdown p {
 .nav-card.emerald:hover { border-color: rgba(16, 185, 129, 0.25); }
 
 .nav-icon {
-    font-size: 2.8rem;
-    margin-bottom: 16px;
-    display: block;
+    width: 58px; height: 58px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    color: #a78bfa;
+    background: linear-gradient(135deg, rgba(108,92,231,0.15), rgba(14,165,233,0.08));
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
 }
+.nav-card:hover .nav-icon { transform: scale(1.1) translateY(-2px); }
+
+.nav-card.purple  .nav-icon { color:#a78bfa; background:linear-gradient(135deg, rgba(108,92,231,0.18), rgba(108,92,231,0.05)); }
+.nav-card.blue    .nav-icon { color:#38bdf8; background:linear-gradient(135deg, rgba(14,165,233,0.18), rgba(14,165,233,0.05)); }
+.nav-card.orange  .nav-icon { color:#fbbf24; background:linear-gradient(135deg, rgba(245,158,11,0.18), rgba(245,158,11,0.05)); }
+.nav-card.emerald .nav-icon { color:#34d399; background:linear-gradient(135deg, rgba(16,185,129,0.18), rgba(16,185,129,0.05)); }
 
 .nav-title {
     font-size: 1.15rem;
@@ -223,6 +261,19 @@ section[data-testid="stSidebar"] .stMarkdown p {
     color: var(--text-secondary);
     line-height: 1.5;
 }
+
+/* whole-card click target */
+.nav-card-link { text-decoration: none !important; display: block; }
+.nav-cta {
+    margin-top: 16px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent-purple);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: all 0.3s ease;
+}
+.nav-card:hover .nav-cta { opacity: 1; transform: translateY(0); }
 
 /* ── KPI metric ── */
 .kpi-card {
@@ -253,95 +304,95 @@ section[data-testid="stSidebar"] .stMarkdown p {
     margin-top: 6px;
 }
 
-/* ── Login page ── */
-.login-container {
-    max-width: 420px;
-    margin: 0 auto;
-    padding-top: 60px;
-}
-
+/* ── Login page (centered) ── */
 .login-logo {
     text-align: center;
-    margin-bottom: 40px;
+    margin: 40px 0 28px;
+    animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-
 .login-logo-icon {
-    font-size: 3.5rem;
-    display: block;
+    width: 64px; height: 64px; border-radius: 20px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #6C5CE7, #0EA5E9);
+    font-size: 2rem;
+    box-shadow: 0 8px 32px rgba(108,92,231,0.4);
     margin-bottom: 16px;
-    animation: fadeInScale 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-
 .login-title {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 4px;
+    font-size: 1.9rem; font-weight: 800;
+    color: var(--text-primary); letter-spacing: -0.5px;
 }
-
 .login-subtitle {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
+    font-size: 0.92rem; color: var(--text-secondary); margin-top: 4px;
 }
 
 .login-box {
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
-    border-radius: 24px;
-    padding: 36px 32px;
+    border-radius: 20px;
+    padding: 30px 28px;
     box-shadow: var(--shadow-md);
-    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
     opacity: 0;
 }
 
 .demo-accounts {
-    margin-top: 32px;
-    padding: 20px;
-    background: rgba(108, 92, 231, 0.04);
-    border: 1px solid rgba(108, 92, 231, 0.1);
+    margin-top: 20px;
+    padding: 18px;
+    background: rgba(108, 92, 231, 0.05);
+    border: 1px solid rgba(108, 92, 231, 0.12);
     border-radius: 16px;
     animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
     opacity: 0;
 }
 
 .demo-title {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.68rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: var(--accent-purple);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
 .demo-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-radius: 10px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     transition: background 0.2s ease;
+    cursor: default;
 }
 
-.demo-row:hover { background: rgba(0, 0, 0, 0.02); }
+.demo-row:hover { background: rgba(108,92,231,0.06); }
 
 .demo-email {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     color: var(--text-secondary);
 }
 
+.demo-pwd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
 .demo-role {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.68rem;
+    font-weight: 700;
     padding: 3px 10px;
     border-radius: 6px;
     color: white;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
-.role-admin { background: var(--accent-purple); }
-.role-recruiter { background: var(--accent-blue); }
-.role-candidate { background: var(--accent-emerald); }
+.role-admin { background: linear-gradient(135deg, #6C5CE7, #F43F5E); }
+.role-recruiter { background: linear-gradient(135deg, #6C5CE7, #0EA5E9); }
+.role-candidate { background: linear-gradient(135deg, #10B981, #0EA5E9); }
 
 /* ── Welcome header ── */
 .welcome-header {
@@ -392,21 +443,35 @@ section[data-testid="stSidebar"] .stMarkdown p {
 
 /* ── Page header ── */
 .page-header {
-    padding: 10px 0 30px 0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 4px 0 24px 0;
     border-bottom: 1px solid var(--border-subtle);
-    margin-bottom: 30px;
+    margin-bottom: 28px;
 }
 
-.page-header-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+.page-header-icon {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(108,92,231,0.16), rgba(14,165,233,0.1));
+    border: 1px solid rgba(108,92,231,0.2);
+    color: #a78bfa;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(108,92,231,0.12);
+}
 
 .page-header-title {
-    font-size: 2rem;
+    font-size: 1.9rem;
     font-weight: 800;
     color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1.15;
 }
 
 .page-header-sub {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     color: var(--text-secondary);
     margin-top: 4px;
 }
@@ -473,6 +538,44 @@ div[data-testid="stMetric"] div[data-testid="stMetricValue"] {
     color: var(--text-secondary) !important;
 }
 
+/* ── White input boxes with black text ── */
+.stTextInput input,
+.stTextArea textarea,
+.stNumberInput input,
+.stDateInput input {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+}
+.stTextInput input::placeholder,
+.stTextArea textarea::placeholder {
+    color: #9ca3af !important;
+}
+/* selectbox / multiselect closed control */
+div[data-baseweb="select"] > div {
+    background-color: #ffffff !important;
+}
+div[data-baseweb="select"] > div,
+div[data-baseweb="select"] span,
+div[data-baseweb="select"] input {
+    color: #111111 !important;
+}
+/* dropdown popover options */
+ul[data-baseweb="menu"] { background-color: #ffffff !important; }
+ul[data-baseweb="menu"] li { color: #111111 !important; }
+
+/* ── Back button (small rounded pill) + main-area page links ── */
+[data-testid="stMain"] a[data-testid="stPageLink-NavLink"] {
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 10px !important;
+    padding: 8px 16px !important;
+    background: var(--bg-card) !important;
+    transition: all 0.25s ease !important;
+}
+[data-testid="stMain"] a[data-testid="stPageLink-NavLink"]:hover {
+    border-color: var(--accent-purple) !important;
+    background: var(--bg-card-hover) !important;
+}
+
 /* ── Hide fullscreen buttons on charts ── */
 button[title="View fullscreen"] { display: none !important; }
 
@@ -498,6 +601,65 @@ button[title="View fullscreen"] { display: none !important; }
     color: #6C5CE7 !important;
     border-bottom: 2px solid #6C5CE7;
 }
+
+/* ── App loader (simulated fetch) ── */
+.app-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: 54px 20px;
+    animation: fadeInScale 0.4s ease forwards;
+}
+.app-loader-ring {
+    width: 58px; height: 58px;
+    position: relative;
+}
+.app-loader-ring::before,
+.app-loader-ring::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid transparent;
+}
+.app-loader-ring::before {
+    inset: 0;
+    border-top-color: #6C5CE7;
+    border-right-color: #0EA5E9;
+    animation: spin360 0.9s linear infinite;
+}
+.app-loader-ring::after {
+    inset: 9px;
+    border-bottom-color: #10B981;
+    border-left-color: #34D399;
+    animation: spin360 1.3s linear infinite reverse;
+}
+@keyframes spin360 { to { transform: rotate(360deg); } }
+
+.app-loader-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.2px;
+}
+.app-loader-track {
+    width: 220px; height: 4px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.app-loader-fill {
+    height: 100%;
+    width: 35%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #6C5CE7, #0EA5E9, #10B981);
+    animation: loaderSlide 1.15s cubic-bezier(0.4,0,0.2,1) infinite;
+}
+@keyframes loaderSlide {
+    0% { transform: translateX(-130%); }
+    100% { transform: translateX(420%); }
+}
 </style>
 """
 
@@ -507,32 +669,51 @@ def inject_styles():
 
 
 def page_header(icon: str, title: str, subtitle: str):
+    icon_html = svg(icon, 28) if icon in _ICON_PATHS else f'<span style="font-size:1.6rem;">{icon}</span>'
     st.markdown(f"""
     <div class="page-header animate-in">
-        <span class="page-header-icon">{icon}</span>
-        <div class="page-header-title">{title}</div>
-        <div class="page-header-sub">{subtitle}</div>
+        <div class="page-header-icon">{icon_html}</div>
+        <div class="page-header-text">
+            <div class="page-header-title">{title}</div>
+            <div class="page-header-sub">{subtitle}</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
 
 def back_to_home():
-    st.page_link("app.py", label="< Back to Home", icon="🏠")
+    col = st.columns([1, 7])[0]
+    with col:
+        st.page_link("app.py", label="Back")
 
 
 def section_label(text: str):
     st.markdown(f'<div class="section-label">{text}</div>', unsafe_allow_html=True)
 
 
+def show_loading(message: str = "Analyzing data", seconds: float = 3.0):
+    """Display a branded loading animation for the given duration (simulated fetch)."""
+    placeholder = st.empty()
+    placeholder.markdown(f"""
+    <div class="app-loader">
+        <div class="app-loader-ring"></div>
+        <div class="app-loader-text">{message}</div>
+        <div class="app-loader-track"><div class="app-loader-fill"></div></div>
+    </div>
+    """, unsafe_allow_html=True)
+    time.sleep(seconds)
+    placeholder.empty()
+
+
 PLOTLY_LAYOUT = dict(
     paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="#ffffff",
-    font=dict(family="Outfit, sans-serif", color="#64748b", size=12),
+    plot_bgcolor="#1a1a2e",
+    font=dict(family="Outfit, sans-serif", color="#cbd5e1", size=12),
     margin=dict(l=40, r=20, t=40, b=40),
-    xaxis=dict(gridcolor="rgba(0,0,0,0.05)", zerolinecolor="rgba(0,0,0,0.05)"),
-    yaxis=dict(gridcolor="rgba(0,0,0,0.05)", zerolinecolor="rgba(0,0,0,0.05)"),
-    legend=dict(bgcolor="rgba(255,255,255,0.8)", font=dict(size=11, color="#1e293b")),
-    hoverlabel=dict(bgcolor="#ffffff", font_size=13, font_family="Outfit", bordercolor="#e2e8f0"),
+    xaxis=dict(gridcolor="rgba(255,255,255,0.05)", zerolinecolor="rgba(255,255,255,0.05)"),
+    yaxis=dict(gridcolor="rgba(255,255,255,0.05)", zerolinecolor="rgba(255,255,255,0.05)"),
+    legend=dict(bgcolor="rgba(26,26,46,0.8)", font=dict(size=11, color="#e2e8f0")),
+    hoverlabel=dict(bgcolor="#1a1a2e", font_size=13, font_family="Outfit", bordercolor="#6C5CE7"),
 )
 
 COLORS = ["#6C5CE7", "#0EA5E9", "#10B981", "#F59E0B", "#F43F5E", "#8B5CF6", "#06B6D4", "#34D399", "#FBBF24", "#FB7185"]

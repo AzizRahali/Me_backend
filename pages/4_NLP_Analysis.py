@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import os
 from dotenv import load_dotenv
-from utils.styles import inject_styles, page_header, section_label, back_to_home
+from utils.styles import inject_styles, page_header, section_label, back_to_home, show_loading
 from utils.auth import require_auth, show_sidebar_info, get_role
 
 load_dotenv()
@@ -35,8 +35,8 @@ st.markdown("""
 <style>
     /* ── Form section ── */
     .form-section {
-        background: #ffffff;
-        border: 1px solid rgba(0,0,0,0.06);
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.07);
         box-shadow: 0 1px 4px rgba(0,0,0,0.03);
         border-radius: 18px;
         padding: 28px 30px 24px;
@@ -59,29 +59,29 @@ st.markdown("""
         margin-top: 16px;
     }
     .result-card {
-        background: #ffffff;
-        border: 1px solid rgba(0,0,0,0.06);
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.07);
         box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         border-radius: 14px;
         padding: 16px;
         transition: all 0.3s ease;
     }
     .result-card:hover {
-        background: #f8f9ff;
-        border-color: rgba(108,92,231,0.15);
+        background: #1e1e35;
+        border-color: rgba(108,92,231,0.3);
     }
     .result-card-label {
         font-size: 0.65rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 1.5px;
-        color: #94a3b8;
+        color: #cbd5e1;
         margin-bottom: 6px;
     }
     .result-card-value {
         font-size: 1rem;
         font-weight: 600;
-        color: #1e293b;
+        color: #e2e8f0;
     }
 
     /* ── Score ring ── */
@@ -99,7 +99,7 @@ st.markdown("""
         padding: 4px;
         background: conic-gradient(
             #6C5CE7 calc(var(--score) * 1%),
-            #f1f5f9 calc(var(--score) * 1%)
+            rgba(255,255,255,0.08) calc(var(--score) * 1%)
         );
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
@@ -143,19 +143,19 @@ st.markdown("""
 
     /* ── Job card ── */
     .job-card {
-        background: #ffffff;
-        border: 1px solid rgba(0,0,0,0.06);
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.07);
         border-radius: 14px;
         padding: 16px 18px;
         margin-top: 8px;
         transition: all 0.3s ease;
     }
     .job-card:hover {
-        background: #f8f9ff;
+        background: #1e1e35;
         transform: translateX(4px);
     }
-    .job-card-title { font-size: 0.92rem; font-weight: 700; color: #1e293b; }
-    .job-card-meta  { font-size: 0.78rem; color: #64748b; margin-top: 4px; }
+    .job-card-title { font-size: 0.92rem; font-weight: 700; color: #e2e8f0; }
+    .job-card-meta  { font-size: 0.78rem; color: #cbd5e1; margin-top: 4px; }
     .job-card-salary {
         font-family: 'JetBrains Mono', monospace;
         font-size: 0.82rem; font-weight: 600;
@@ -165,7 +165,7 @@ st.markdown("""
 
     /* ── Error box ── */
     .api-error {
-        background: rgba(244,63,94,0.04);
+        background: rgba(244,63,94,0.08);
         border: 1px solid rgba(244,63,94,0.15);
         border-radius: 14px;
         padding: 16px 20px;
@@ -174,14 +174,14 @@ st.markdown("""
     }
     .api-error strong { color: #FB7185; }
     .cold-start-note {
-        font-size: 0.78rem; color: #64748b;
+        font-size: 0.78rem; color: #cbd5e1;
         margin-top: 8px; font-style: italic;
     }
 
     /* ── Response wrapper ── */
     .response-wrapper {
-        background: #ffffff;
-        border: 1px solid rgba(0,0,0,0.06);
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.07);
         box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         border-radius: 18px;
         padding: 28px 30px;
@@ -222,7 +222,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 page_header(
-    "💬", "Career Advisor",
+    "advisor", "Career Advisor",
     "AI-powered career guidance — describe your profile and get matched with relevant jobs",
 )
 
@@ -479,7 +479,7 @@ def render_result(data: dict):
             <div class="response-avatar">AI</div>
             <div class="response-label">Recommendation</div>
         </div>
-        <div style="color:#1e293b; font-size:0.92rem; line-height:1.65; margin-bottom:4px;">
+        <div style="color:#cbd5e1; font-size:0.92rem; line-height:1.65; margin-bottom:4px;">
             {data["explanation"]}
         </div>
     </div>
@@ -515,15 +515,15 @@ def render_result(data: dict):
     st.markdown(f"""
     <div style="margin-top:18px;">
         <div class="result-card-label">Matched Skills</div>
-        <div class="skill-tags">{matched_tags or '<span style="color:#94a3b8;font-size:0.82rem;">None detected</span>'}</div>
+        <div class="skill-tags">{matched_tags or '<span style="color:#cbd5e1;font-size:0.82rem;">None detected</span>'}</div>
     </div>
     <div style="margin-top:14px;">
         <div class="result-card-label">Skills to Develop</div>
-        <div class="skill-tags">{missing_tags or '<span style="color:#94a3b8;font-size:0.82rem;">None</span>'}</div>
+        <div class="skill-tags">{missing_tags or '<span style="color:#cbd5e1;font-size:0.82rem;">None</span>'}</div>
     </div>
     <div style="margin-top:14px;">
         <div class="result-card-label">Learning Path</div>
-        <div class="skill-tags">{learn_tags or '<span style="color:#94a3b8;font-size:0.82rem;">No suggestions</span>'}</div>
+        <div class="skill-tags">{learn_tags or '<span style="color:#cbd5e1;font-size:0.82rem;">No suggestions</span>'}</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -552,7 +552,7 @@ def render_result(data: dict):
             """, unsafe_allow_html=True)
     else:
         st.markdown(
-            '<div style="color:#94a3b8;font-size:0.82rem;margin-top:18px;">No matching jobs found</div>',
+            '<div style="color:#cbd5e1;font-size:0.82rem;margin-top:18px;">No matching jobs found</div>',
             unsafe_allow_html=True,
         )
 
@@ -582,12 +582,12 @@ if submit_clicked and final_profile:
         if remote_preference != "not specified":
             summary_parts.append(f"Remote: {remote_preference}")
 
-        with st.spinner("Analyzing your profile... (first request may take ~30s for GPU cold start)"):
-            raw = call_recommendation_api(final_profile)
-            result = transform_api_response(raw)
-            st.session_state.nlp_result = result
-            st.session_state.nlp_profile_text = final_profile
-            st.session_state.nlp_summary = summary_parts
+        show_loading("Analyzing your profile", 3.0)
+        raw = call_recommendation_api(final_profile)
+        result = transform_api_response(raw)
+        st.session_state.nlp_result = result
+        st.session_state.nlp_profile_text = final_profile
+        st.session_state.nlp_summary = summary_parts
         st.rerun()
 
 
@@ -606,7 +606,7 @@ if st.session_state.nlp_result is not None:
         st.markdown(f"""
         <div style="margin-bottom:6px;">
             <div class="result-card-label">Your Query</div>
-            <div style="color:#1e293b;font-size:0.88rem;margin:6px 0 10px;">{profile_sent}</div>
+            <div style="color:#cbd5e1;font-size:0.88rem;margin:6px 0 10px;">{profile_sent}</div>
             <div class="summary-strip">{chips}</div>
         </div>
         """, unsafe_allow_html=True)

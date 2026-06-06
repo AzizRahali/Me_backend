@@ -3,7 +3,7 @@ import streamlit as st
 import requests
 import plotly.graph_objects as go
 from dotenv import load_dotenv
-from utils.styles import inject_styles, page_header, section_label, back_to_home, PLOTLY_LAYOUT, COLORS
+from utils.styles import inject_styles, page_header, section_label, back_to_home, show_loading, PLOTLY_LAYOUT, COLORS
 from utils.auth import require_auth, show_sidebar_info
 
 load_dotenv()
@@ -14,7 +14,7 @@ require_auth()
 show_sidebar_info()
 
 back_to_home()
-page_header("📈", "Market Forecasting",
+page_header("forecast", "Market Forecasting",
             "6-month job demand forecast powered by LSTM / GRU / BiLSTM ensembles")
 
 # ── Page-specific styles ──
@@ -24,8 +24,8 @@ st.markdown("""
     .kpi-row { display: flex; gap: 12px; margin-bottom: 24px; }
     .kpi-item {
         flex: 1;
-        background: #ffffff;
-        border: 1px solid rgba(0,0,0,0.06);
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.07);
         box-shadow: 0 1px 4px rgba(0,0,0,0.03);
         border-radius: 16px;
         padding: 20px 18px;
@@ -61,7 +61,7 @@ st.markdown("""
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 1.5px;
-        color: #94a3b8;
+        color: #cbd5e1;
         margin-top: 6px;
     }
 
@@ -73,8 +73,8 @@ st.markdown("""
         margin: 16px 0 24px;
     }
     .sector-chip {
-        background: #ffffff;
-        border: 1px solid rgba(0,0,0,0.06);
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.07);
         box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         border-radius: 12px;
         padding: 14px 16px;
@@ -84,14 +84,14 @@ st.markdown("""
         opacity: 0;
     }
     .sector-chip:hover {
-        background: #f8f9ff;
+        background: #1e1e35;
         border-color: rgba(108,92,231,0.2);
         transform: translateY(-2px);
     }
     .sector-chip .name {
         font-size: 0.82rem;
         font-weight: 600;
-        color: #1e293b;
+        color: #e2e8f0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -106,14 +106,14 @@ st.markdown("""
     .sector-chip .change.down { color: #F43F5E; }
     .sector-chip .idx {
         font-size: 0.7rem;
-        color: #94a3b8;
+        color: #cbd5e1;
         margin-top: 2px;
     }
 
     /* detail panel */
     .form-section {
-        background: #ffffff;
-        border: 1px solid rgba(0,0,0,0.06);
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.07);
         box-shadow: 0 1px 4px rgba(0,0,0,0.03);
         border-radius: 20px;
         padding: 28px;
@@ -133,16 +133,16 @@ st.markdown("""
         border-bottom: 1px solid rgba(0,0,0,0.04);
         font-size: 0.85rem;
     }
-    .detail-key { color: #94a3b8; }
-    .detail-val { color: #1e293b; font-weight: 600; }
+    .detail-key { color: #cbd5e1; }
+    .detail-val { color: #e2e8f0; font-weight: 600; }
     .mono { font-family: 'JetBrains Mono', monospace; }
 
     /* projection card */
     .dl-result {
         text-align: center;
         padding: 36px 20px;
-        background: #ffffff;
-        border: 1px solid rgba(0,0,0,0.06);
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.07);
         box-shadow: 0 4px 16px rgba(0,0,0,0.04);
         border-radius: 24px;
         margin: 10px 0 20px;
@@ -150,7 +150,7 @@ st.markdown("""
     }
     .dl-label {
         font-size: 0.7rem; font-weight: 700;
-        text-transform: uppercase; letter-spacing: 2.5px; color: #64748b;
+        text-transform: uppercase; letter-spacing: 2.5px; color: #cbd5e1;
         margin-bottom: 12px;
     }
     .dl-value {
@@ -164,7 +164,7 @@ st.markdown("""
         background: linear-gradient(135deg,#F43F5E,#F59E0B);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .dl-sub { font-size: 0.92rem; color: #94a3b8; margin-top: 8px; font-weight: 500; }
+    .dl-sub { font-size: 0.92rem; color: #cbd5e1; margin-top: 8px; font-weight: 500; }
 
 
 </style>
@@ -267,7 +267,7 @@ def build_trajectory_chart(data: dict, title_extra: str = ""):
     # Baseline & divider
     fig.add_hline(y=100, line_dash="dot", line_color="rgba(0,0,0,0.08)",
                   annotation_text="Pre-COVID baseline (100)",
-                  annotation_font_color="#64748b", annotation_font_size=11)
+                  annotation_font_color="#cbd5e1", annotation_font_size=11)
     fig.add_vline(x=hist_dates[-1], line_dash="dash", line_color="rgba(0,0,0,0.06)")
     fig.add_annotation(
         x=hist_dates[-1], y=max(hist_values + fc_values) + 5,
@@ -333,7 +333,7 @@ def build_comparison_chart(datasets: list[dict], label_key: str = "sector"):
     # Baseline
     fig.add_hline(y=100, line_dash="dot", line_color="rgba(0,0,0,0.08)",
                   annotation_text="Baseline (100)",
-                  annotation_font_color="#64748b", annotation_font_size=11)
+                  annotation_font_color="#cbd5e1", annotation_font_size=11)
 
     layout = {**PLOTLY_LAYOUT}
     layout.update(
@@ -411,8 +411,8 @@ with tab_forecast:
 
     # Fetch on button click, persist in session state
     if forecast_clicked and api_online:
-        with st.spinner("Running forecast..."):
-            result = fetch_forecast(selected_region, selected_sector)
+        show_loading("Running forecast model", 3.0)
+        result = fetch_forecast(selected_region, selected_sector)
         if result:
             st.session_state["dl_result"] = result
 
@@ -463,7 +463,7 @@ with tab_forecast:
             st.markdown("""
             <div class="dl-result" style="opacity: 0.5;">
                 <div class="dl-label">6-Month Projection</div>
-                <div class="dl-value" style="background: linear-gradient(135deg,#94a3b8,#cbd5e1);
+                <div class="dl-value" style="background: linear-gradient(135deg,#cbd5e1,#cbd5e1);
                      -webkit-background-clip: text; -webkit-text-fill-color: transparent;">—</div>
                 <div class="dl-sub">Select region & sector, then click Generate Forecast</div>
             </div>
@@ -516,8 +516,8 @@ with tab_forecast:
         )
 
         if overview_clicked:
-            with st.spinner("Loading all sectors..."):
-                st.session_state["dl_overview"] = fetch_all_sectors(selected_region, sectors)
+            show_loading("Loading all sectors", 3.0)
+            st.session_state["dl_overview"] = fetch_all_sectors(selected_region, sectors)
 
         all_data = st.session_state.get("dl_overview")
         if all_data:
@@ -565,14 +565,14 @@ with tab_sectors:
     )
 
     if cmp_sec_clicked and api_online and len(cmp_sectors) >= 2:
-        with st.spinner("Fetching forecasts..."):
-            datasets = []
-            for s in cmp_sectors[:5]:
-                d = fetch_forecast(cmp_region, s)
-                if d:
-                    datasets.append(d)
-            if datasets:
-                st.session_state["cmp_sec_result"] = datasets
+        show_loading("Comparing sectors", 3.0)
+        datasets = []
+        for s in cmp_sectors[:5]:
+            d = fetch_forecast(cmp_region, s)
+            if d:
+                datasets.append(d)
+        if datasets:
+            st.session_state["cmp_sec_result"] = datasets
 
     datasets = st.session_state.get("cmp_sec_result")
 
@@ -640,14 +640,14 @@ with tab_regions:
     )
 
     if cmp_reg_clicked and api_online and len(cmp_regions) >= 2:
-        with st.spinner("Fetching forecasts..."):
-            datasets = []
-            for r in cmp_regions[:5]:
-                d = fetch_forecast(r, cmp_sector)
-                if d:
-                    datasets.append(d)
-            if datasets:
-                st.session_state["cmp_reg_result"] = datasets
+        show_loading("Comparing regions", 3.0)
+        datasets = []
+        for r in cmp_regions[:5]:
+            d = fetch_forecast(r, cmp_sector)
+            if d:
+                datasets.append(d)
+        if datasets:
+            st.session_state["cmp_reg_result"] = datasets
 
     datasets = st.session_state.get("cmp_reg_result")
 
@@ -771,7 +771,7 @@ with tab_pipeline:
             <div>
                 <div style="font-size: 0.95rem; font-weight: 700; color: #1e293b;
                             margin-bottom: 4px;">{title}</div>
-                <div style="font-size: 0.82rem; color: #64748b; line-height: 1.5;
+                <div style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5;
                             margin-bottom: 6px;">{desc}</div>
                 <div>{tags}</div>
             </div>
@@ -801,7 +801,7 @@ with tab_pipeline:
                 <div style="font-size: 0.78rem; color: #6C5CE7; margin: 4px 0 8px; font-weight: 600;">
                     {full}
                 </div>
-                <div style="font-size: 0.82rem; color: #64748b; line-height: 1.5;">
+                <div style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5;">
                     {desc}
                 </div>
             </div>

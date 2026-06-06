@@ -35,23 +35,23 @@ def login_form():
     if st.session_state.authenticated:
         return True
 
-    st.markdown("""
-    <div class="login-container">
-        <div class="login-logo">
-            <span class="login-logo-icon">&#9672;</span>
-            <div class="login-title">JobLens</div>
-            <div class="login-subtitle">Job Market Intelligence Platform</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # ── Centered login ──
+    col_l, col_c, col_r = st.columns([1, 1.4, 1])
+    with col_c:
+        st.markdown(
+            '<div class="login-logo">'
+            '<div class="login-logo-icon">&#9672;</div>'
+            '<div class="login-title">JobLens</div>'
+            '<div class="login-subtitle">Job Market Intelligence Platform</div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
 
-    col_left, col_form, col_right = st.columns([1, 1.5, 1])
-    with col_form:
         st.markdown('<div class="login-box">', unsafe_allow_html=True)
         with st.form("login_form"):
-            email = st.text_input("Email", placeholder="Enter your email")
-            password = st.text_input("Password", type="password", placeholder="Enter your password")
-            submitted = st.form_submit_button("Sign In", use_container_width=True)
+            email = st.text_input("Email address", placeholder="you@example.com")
+            password = st.text_input("Password", type="password", placeholder="••••••••••")
+            submitted = st.form_submit_button("Sign In", use_container_width=True, type="primary")
         st.markdown('</div>', unsafe_allow_html=True)
 
         if submitted:
@@ -65,28 +65,24 @@ def login_form():
             else:
                 st.error("Invalid email or password.")
 
-        st.markdown("""
-        <div class="demo-accounts">
-            <div class="demo-title">Demo Credentials</div>
-            <div class="demo-row">
-                <span class="demo-email">aziz.rahali@wecioo.com</span>
-                <span class="demo-role role-admin">Admin</span>
-            </div>
-            <div class="demo-row">
-                <span class="demo-email">bayoudhimed@gmail.com</span>
-                <span class="demo-role role-recruiter">Recruiter</span>
-            </div>
-            <div class="demo-row">
-                <span class="demo-email">azizrahali3@gmail.com</span>
-                <span class="demo-role role-candidate">Candidate</span>
-            </div>
-            <div style="margin-top: 10px; text-align: center;">
-                <span style="font-size: 0.72rem; color: #94a3b8;">
-                    Password pattern: role + 123 (e.g. admin123)
-                </span>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        # ── Demo accounts ──
+        st.markdown(
+            '<div class="demo-accounts">'
+            '<div class="demo-title">&#128274; Demo Accounts</div>'
+            '<div class="demo-row"><span class="demo-email">aziz.rahali@wecioo.com</span>'
+            '<span class="demo-role role-admin">Admin</span></div>'
+            '<div class="demo-row"><span class="demo-email">bayoudhimed@gmail.com</span>'
+            '<span class="demo-role role-recruiter">Recruiter</span></div>'
+            '<div class="demo-row"><span class="demo-email">azizrahali3@gmail.com</span>'
+            '<span class="demo-role role-candidate">Candidate</span></div>'
+            '<div style="margin-top:10px;padding:8px 12px;background:rgba(108,92,231,0.06);'
+            'border-radius:8px;font-size:0.72rem;color:#cbd5e1;text-align:center;">'
+            'Password: <span style="font-family:\'JetBrains Mono\',monospace;color:#a78bfa;">role + 123</span>'
+            '&nbsp;&nbsp;e.g. <span style="font-family:\'JetBrains Mono\',monospace;color:#a78bfa;">admin123</span>'
+            '</div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
 
     return False
 
@@ -119,9 +115,9 @@ def show_sidebar_info():
             st.markdown(f"""
             <style>
                 section[data-testid="stSidebar"] {{
-                    background: #ffffff !important;
-                    border-right: 1px solid rgba(0,0,0,0.06) !important;
-                    box-shadow: 2px 0 12px rgba(0,0,0,0.03);
+                    background: #1a1a2e !important;
+                    border-right: 1px solid rgba(255,255,255,0.07) !important;
+                    box-shadow: 2px 0 12px rgba(0,0,0,0.3);
                 }}
                 section[data-testid="stSidebar"] > div:first-child {{
                     padding-top: 1rem;
@@ -155,20 +151,20 @@ def show_sidebar_info():
                     font-family: 'Outfit', sans-serif;
                     font-size: 0.62rem; font-weight: 700;
                     text-transform: uppercase; letter-spacing: 2.5px;
-                    color: #94a3b8;
+                    color: #cbd5e1;
                     padding: 8px 26px 6px;
                 }}
 
                 .sb-profile {{
                     margin: 6px 8px; padding: 18px;
                     border-radius: 16px;
-                    background: #f8f9fc;
-                    border: 1px solid rgba(0,0,0,0.04);
+                    background: rgba(255,255,255,0.04);
+                    border: 1px solid rgba(255,255,255,0.07);
                     transition: all 0.3s ease;
                 }}
                 .sb-profile:hover {{
-                    background: #f0f1f8;
-                    border-color: rgba(0,0,0,0.06);
+                    background: rgba(255,255,255,0.07);
+                    border-color: rgba(108,92,231,0.2);
                 }}
                 .sb-profile-top {{ display: flex; align-items: center; gap: 14px; }}
                 .sb-avatar {{
@@ -182,12 +178,12 @@ def show_sidebar_info():
                 .sb-profile-info {{ overflow: hidden; }}
                 .sb-profile-name {{
                     font-family: 'Outfit', sans-serif; font-size: 0.92rem;
-                    font-weight: 700; color: #1e293b;
+                    font-weight: 700; color: #e2e8f0;
                     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
                 }}
                 .sb-profile-email {{
                     font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
-                    color: #94a3b8;
+                    color: #cbd5e1;
                     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
                     margin-top: 2px;
                 }}
@@ -208,10 +204,10 @@ def show_sidebar_info():
                     font-size: 1.1rem;
                     box-shadow: 0 4px 16px {accent_color}20;
                 }}
-                .sb-logo-text {{ font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 800; color: #1e293b; letter-spacing: -0.5px; }}
+                .sb-logo-text {{ font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 800; color: #e2e8f0; letter-spacing: -0.5px; }}
                 .sb-logo-sub {{
                     font-family: 'Outfit', sans-serif; font-size: 0.6rem;
-                    color: #94a3b8; letter-spacing: 2px; text-transform: uppercase;
+                    color: #cbd5e1; letter-spacing: 2px; text-transform: uppercase;
                     padding-left: 20px; margin-top: -2px; margin-bottom: 4px;
                 }}
 
@@ -239,19 +235,19 @@ def show_sidebar_info():
                     text-decoration: none !important; background: transparent !important;
                 }}
                 section[data-testid="stSidebar"] a[data-testid="stPageLink-NavLink"]:hover {{
-                    background: rgba(108, 92, 231, 0.04) !important;
-                    border-color: rgba(108, 92, 231, 0.08) !important;
+                    background: rgba(108, 92, 231, 0.1) !important;
+                    border-color: rgba(108, 92, 231, 0.2) !important;
                     transform: translateX(4px);
                 }}
                 section[data-testid="stSidebar"] a[data-testid="stPageLink-NavLink"] span,
                 section[data-testid="stSidebar"] a[data-testid="stPageLink-NavLink"] p {{
                     font-family: 'Outfit', sans-serif !important;
                     font-size: 0.88rem !important; font-weight: 500 !important;
-                    color: #64748b !important; transition: color 0.25s ease !important;
+                    color: #cbd5e1 !important; transition: color 0.25s ease !important;
                 }}
                 section[data-testid="stSidebar"] a[data-testid="stPageLink-NavLink"]:hover span,
                 section[data-testid="stSidebar"] a[data-testid="stPageLink-NavLink"]:hover p {{
-                    color: #1e293b !important;
+                    color: #e2e8f0 !important;
                 }}
             </style>
 
@@ -279,14 +275,14 @@ def show_sidebar_info():
             <div class="sb-section">Navigation</div>
             """, unsafe_allow_html=True)
 
-            st.page_link("app.py", label="🏠  Home")
-            st.page_link("pages/1_Dashboard.py", label="📊  Market Overview")
+            st.page_link("app.py", label="Home")
+            st.page_link("pages/1_Dashboard.py", label="Market Overview")
 
             st.markdown('<div class="sb-section" style="margin-top: 10px;">AI Models</div>', unsafe_allow_html=True)
 
-            st.page_link("pages/2_ML_Prediction.py", label="🤖  Salary Predictor")
-            st.page_link("pages/3_DL_Model.py", label="📈  Market Forecasting")
-            st.page_link("pages/4_NLP_Analysis.py", label="💬  Career Advisor")
+            st.page_link("pages/2_ML_Prediction.py", label="Salary Predictor")
+            st.page_link("pages/3_DL_Model.py", label="Market Forecasting")
+            st.page_link("pages/4_NLP_Analysis.py", label="Career Advisor")
 
             st.markdown('<div class="sb-divider"></div>', unsafe_allow_html=True)
 

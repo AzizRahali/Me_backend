@@ -21,7 +21,18 @@
       "Bash(git update-ref *)",
       "Bash(git reflog *)",
       "Bash(git gc *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('pages/2_ML_Prediction.py', encoding='utf-8'\\).read\\(\\)\\); print\\('2_ML_Prediction.py syntax OK'\\)\")",
+      "Bash(curl -s -m 90 https://me-backend-gg38.onrender.com/health)",
+      "Bash(curl -s -m 60 -o /dev/null -w \"HTTP %{http_code} | Content-Type: %{content_type}\\\\n\" https://me-backend-gg38.onrender.com/salary/metadata)",
+      "Bash(curl -s -m 60 -o /dev/null -w \"HTTP %{http_code} | Content-Type: %{content_type}\\\\n\" https://me-backend-gg38.onrender.com/docs)",
+      "Bash(curl -s -m 60 https://me-backend-gg38.onrender.com/_stcore/health)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('utils/auth.py', encoding='utf-8'\\).read\\(\\)\\); print\\('auth.py OK'\\)\")",
+      "Bash(python -c ' *)",
+      "Bash(curl -s -m 90 -o /dev/null -w \"HTTP %{http_code} | %{content_type}\\\\n\" https://me-backend-gg38.onrender.com/health)",
+      "Bash(curl -s -m 60 https://me-backend-gg38.onrender.com/health)",
+      "Bash(echo \"=== salary/predict ===\")",
+      "Bash(curl -s -m 60 -X POST https://me-backend-gg38.onrender.com/salary/predict -H 'Content-Type: application/json' -d '{\"job_title_short\":\"Data Scientist\",\"job_country\":\"United States\",\"job_schedule_type\":\"Full-time\",\"company_size\":\"5000+\",\"job_work_from_home\":true,\"job_no_degree_mention\":false,\"job_health_insurance\":true,\"job_title\":\"Senior Data Scientist\",\"job_skills\":[\"python\",\"sql\"]}')"
     ]
   }
 }

@@ -25,6 +25,6 @@ services:
       - api
     environment:
       API_URL: http://api:10000
-      NLP_API_URL: https://arijarfaoui39--recommend-dev.modal.run
+      NLP_API_URL: https://arijarfaoui39--recommend.modal.run
       NLP_API_KEY: ${NLP_API_KEY}
       POWERBI_EMBED_URL: ${POWERBI_EMBED_URL}
