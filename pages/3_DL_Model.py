@@ -15,7 +15,7 @@ show_sidebar_info()
 
 back_to_home()
 page_header("forecast", "Market Forecasting",
-            "6-month job demand forecast powered by LSTM / GRU / BiLSTM ensembles")
+            "6-month job demand forecast")
 
 # ── Page-specific styles ──
 st.markdown("""
@@ -373,11 +373,10 @@ else:
 # TABS: Forecast / Compare Sectors / Compare Regions
 # ══════════════════════════════════════════════════════════════
 
-tab_forecast, tab_sectors, tab_regions, tab_pipeline = st.tabs([
+tab_forecast, tab_sectors, tab_regions = st.tabs([
     "📈  Single Forecast",
     "🔀  Compare Sectors",
     "🌍  Compare Regions",
-    "⚙️  Model Pipeline",
 ])
 
 
@@ -689,120 +688,3 @@ with tab_regions:
         st.info("Select at least 2 regions to compare.")
     elif not datasets:
         st.info("Click **Compare Regions** to generate the comparison.")
-
-
-# ──────────────────────────────────────────────────
-# TAB 4 — MODEL PIPELINE
-# ──────────────────────────────────────────────────
-with tab_pipeline:
-
-    # Model info card
-    if model_info:
-        best = model_info.get("best_architecture", "GRU").upper()
-        rmse = model_info.get("rmse", "—")
-        r2 = model_info.get("r2", "—")
-        mae = model_info.get("mae", "—")
-        start = data_range.get("start", "—") if data_range else "—"
-        end = data_range.get("end", "—") if data_range else "—"
-        months = data_range.get("months", "—") if data_range else "—"
-
-        st.markdown(f"""
-        <div class="kpi-row">
-            <div class="kpi-item">
-                <div class="kpi-num grad-purple">{best}</div>
-                <div class="kpi-desc">Best Architecture</div>
-            </div>
-            <div class="kpi-item">
-                <div class="kpi-num grad-green">{rmse}</div>
-                <div class="kpi-desc">Test RMSE</div>
-            </div>
-            <div class="kpi-item">
-                <div class="kpi-num grad-green">{mae}</div>
-                <div class="kpi-desc">Test MAE</div>
-            </div>
-            <div class="kpi-item">
-                <div class="kpi-num grad-purple">{r2}</div>
-                <div class="kpi-desc">Test R²</div>
-            </div>
-            <div class="kpi-item">
-                <div class="kpi-num grad-purple">{months}</div>
-                <div class="kpi-desc">Months of Data</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    section_label("End-to-End Pipeline")
-
-    steps = [
-        ("1", "Data Ingestion",
-         "Indeed Job Postings Index from 6 countries (US, AU, CA, DE, FR, GB), Feb 2020 onwards",
-         ["pandas", "CSV loader"]),
-        ("2", "Aggregation",
-         "Monthly global/regional index per sector, filtered to total postings",
-         ["groupby", "cross-country mean"]),
-        ("3", "STL Denoising",
-         "Seasonal-Trend decomposition, discard residual noise for cleaner signal",
-         ["STL", "robust=True", "period=12"]),
-        ("4", "Feature Engineering",
-         "First differencing, cyclical month encoding, rolling volatility, COVID flag",
-         ["np.diff", "sin/cos", "MinMaxScaler"]),
-        ("5", "Training",
-         "7-seed ensemble per architecture, Huber loss, L2 + dropout regularization",
-         ["LSTM", "GRU", "BiLSTM", "EarlyStopping"]),
-        ("6", "Forecasting",
-         "Recursive 6-month forecast with 10th–90th percentile ensemble uncertainty",
-         ["recursive predict", "bias correction"]),
-    ]
-
-    for num, title, desc, techs in steps:
-        tags = "".join(
-            f"""<span style="font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
-                padding: 3px 10px; border-radius: 6px; background: rgba(108,92,231,0.08);
-                border: 1px solid rgba(108,92,231,0.15); color: #6C5CE7;
-                margin-right: 4px;">{t}</span>""" for t in techs
-        )
-        st.markdown(f"""
-        <div style="display: flex; align-items: flex-start; gap: 16px; padding: 14px 0;
-                    border-bottom: 1px solid rgba(0,0,0,0.04);">
-            <div style="width: 32px; height: 32px; border-radius: 10px;
-                        background: linear-gradient(135deg, #6C5CE7, #0EA5E9);
-                        display: flex; align-items: center; justify-content: center;
-                        font-weight: 800; font-size: 0.8rem; color: white; flex-shrink: 0;">{num}</div>
-            <div>
-                <div style="font-size: 0.95rem; font-weight: 700; color: #1e293b;
-                            margin-bottom: 4px;">{title}</div>
-                <div style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5;
-                            margin-bottom: 6px;">{desc}</div>
-                <div>{tags}</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # Architecture comparison
-    section_label("Architecture Comparison")
-
-    arch_data = [
-        ("LSTM", "Long Short-Term Memory", "Gated memory cells for long-range dependencies"),
-        ("GRU", "Gated Recurrent Unit", "Simplified gating, faster training, often comparable accuracy"),
-        ("BiLSTM", "Bidirectional LSTM", "Forward + backward passes capture context from both directions"),
-    ]
-
-    cols = st.columns(3)
-    for i, (name, full, desc) in enumerate(arch_data):
-        with cols[i]:
-            is_best = model_info.get("best_architecture", "").upper() == name
-            border = "border-color: rgba(108,92,231,0.4);" if is_best else ""
-            badge = '<span style="font-size:0.65rem;background:#6C5CE7;color:white;padding:2px 8px;border-radius:4px;margin-left:8px;">BEST</span>' if is_best else ""
-            st.markdown(f"""
-            <div class="form-section" style="{border}">
-                <div style="font-size: 1.1rem; font-weight: 800; color: #1e293b;">
-                    {name}{badge}
-                </div>
-                <div style="font-size: 0.78rem; color: #6C5CE7; margin: 4px 0 8px; font-weight: 600;">
-                    {full}
-                </div>
-                <div style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5;">
-                    {desc}
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
